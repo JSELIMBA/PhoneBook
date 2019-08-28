@@ -1,6 +1,6 @@
 package ge.bog.training.phonebook.gui;
 
-import ge.bog.training.PhoneBook.model.Contact;
+import ge.bog.training.Phonebook.model.Contact;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,4 +1,4 @@
-package ge.bog.training.PhoneBook.core;
+package ge.bog.training.Phonebook.core;
 
 import java.io.File;
 import java.io.FileNotFoundException;

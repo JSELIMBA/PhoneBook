@@ -1,6 +1,6 @@
-package ge.bog.training.PhoneBook.model;
+package ge.bog.training.Phonebook.model;
 
-import ge.bog.training.PhoneBook.core.ContactApi;
+import ge.bog.training.Phonebook.core.ContactApi;
 
 import java.util.List;
 
