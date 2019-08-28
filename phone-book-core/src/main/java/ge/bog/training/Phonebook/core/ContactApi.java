@@ -11,7 +11,7 @@ public class ContactApi {
     private String phoneNumber;
     private String firstName;
     private String lastName;
-    private static int index = 0;
+    private boolean exists = false;
 
     public ContactApi(String phoneNumber, String firsName, String lastName) {
         this.phoneNumber = phoneNumber;
@@ -71,6 +71,43 @@ public class ContactApi {
         scanner.close();
 
         return list;
+    }
+
+
+    public boolean isContactExist(ContactApi contacts) {
+
+        Scanner scanner = null;
+        try {
+            scanner = new Scanner(new File(path));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        while (scanner.hasNext()) {
+
+            phoneNumber = scanner.next();
+
+            firstName = scanner.next();
+
+            lastName = scanner.next();
+
+            if (firstName.equals(contacts.firstName) & lastName.equals(contacts.lastName) & phoneNumber.contains(contacts.phoneNumber)) {
+
+                exists = true;
+                break;
+
+            } else {
+
+                exists = false;
+
+            }
+
+        }
+
+        scanner.close();
+
+        return exists;
+
     }
 
     public String getPhoneNumber() {

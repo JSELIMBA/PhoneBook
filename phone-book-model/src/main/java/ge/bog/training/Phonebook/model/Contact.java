@@ -37,6 +37,13 @@ public class Contact {
         return result;
     }
 
+    public boolean isContactExist(ContactApi contacts) {
+
+        ContactApi contact = new ContactApi();
+
+        return contact.isContactExist(contacts);
+    }
+
     public String getPhoneNumber() {
         return phoneNumber;
     }
