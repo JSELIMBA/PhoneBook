@@ -1,5 +1,6 @@
 package ge.bog.training.phonebook.gui;
 
+
 import ge.bog.training.Phonebook.core.ContactApi;
 import ge.bog.training.Phonebook.model.Contact;
 
@@ -12,16 +13,7 @@ import java.util.List;
 public class SearchContact {
 
 
-    private JList<String> list;
-
-    public JList JlistContact(ContactApi contact) {
-        DefaultListModel<String> listModel = new DefaultListModel<>();
-        listModel.addElement(contact.getPhoneNumber() + " " + contact.getfirstName() + " " + contact.getlastName());
-
-        list = new JList<>(listModel);
-
-        return list;
-    }
+    private JList list;
 
     public void searchContact() {
 
@@ -83,8 +75,9 @@ public class SearchContact {
                             JOptionPane.showMessageDialog(null, "კონტაქტი არ მოიძებნა.");
                         } else {
 
+                            String[] contacts = {res.getPhoneNumber(), res.getfirstName(), res.getlastName()};
 
-                            JList<ContactApi> list = JlistContact(res);
+                            list = new JList(contacts);
                             gbc.fill = GridBagConstraints.HORIZONTAL;
                             gbc.gridx = 1;
                             gbc.gridy = i;
@@ -102,8 +95,8 @@ public class SearchContact {
         buttonBack.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
-                PhoneBook phoneBook = new PhoneBook();
-                phoneBook.run();
+                PhoneBook phoneBooks = new PhoneBook();
+                phoneBooks.run();
 
                 searchContact.setVisible(false);
             }
