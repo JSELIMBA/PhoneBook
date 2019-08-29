@@ -13,13 +13,23 @@
 <body>
 
 <form action = "phonebook" method = "POST">
+    <center>
+
+        Add Contact
+        <br/>
+        <br/>
+
     First Name: <input type = "text" name = "firstname">
+    <br/>
     <br/>
     Last Name: <input type = "text" name = "lastname">
     <br/>
-    PhoneNumber Name: <input type = "text" name = "phonenumber">
+    <br/>
+    PhoneNumber: <input type = "text" name = "phonenumber">
+    <br/>
     <br/>
     <input type = "submit" value = "კონტაქტის დამატება" />
+    </center>
 </form>
 
 <div>

@@ -2,7 +2,6 @@ package ge.bog.training.phonebook.web;
 
 import ge.bog.training.Phonebook.core.ContactApi;
 import ge.bog.training.Phonebook.model.Contact;
-
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

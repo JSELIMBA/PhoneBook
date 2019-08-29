@@ -11,11 +11,16 @@
     <title>PhoneBook</title>
 </head>
 <body>
+<center>
+
+    Phone Book
+    <br/>
+    <br/>
 
 <button onclick="window.location.href='/phone-book-web-1.0/addContact.jsp'">ახალი კონტაქტი</button>
 
 <button onclick="window.location.href='/phone-book-web-1.0/searchContact.jsp'">კონტაქტის ძიება</button>
-
+</center>
 <div>
     <%
         session.setAttribute("contactSearchResult", "");

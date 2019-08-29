@@ -27,17 +27,28 @@
 <body>
 
 <form action = "phonebook" method = "GET">
+    <center>
+
+        Search Contact
+        <br/>
+        <br/>
+
     Search Value: <input type = "text" name = "sValue">
     <br/>
+    <br/>
     <input type = "submit" value = "კონტაქტის ძიება" />
+    </center>
 </form>
 
 <div>
+    <center>
     <%
         if (session.getAttribute("contactSearchResult") != null) {
             out.print(session.getAttribute("contactSearchResult"));
         }
+
     %>
+    </center>
     <br/>
 </div>
 
