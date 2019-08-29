@@ -56,7 +56,7 @@ class AddContact {
 
                     Contact contact = new Contact(phone.getText().trim(), fName.getText().trim(), lName.getText().trim());
 
-                    ContactApi contactApi = new ContactApi(contact.getPhoneNumber(), contact.getFirstName(), contact.getLastName());
+                    ContactApi contactApi = new ContactApi(contact.getId(), contact.getPhoneNumber(), contact.getFirstName(), contact.getLastName());
 
                     if (search.isContactExist(contactApi)) {
 

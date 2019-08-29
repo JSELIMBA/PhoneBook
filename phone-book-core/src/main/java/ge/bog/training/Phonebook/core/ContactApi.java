@@ -1,74 +1,118 @@
 package ge.bog.training.Phonebook.core;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
+import javax.ejb.Singleton;
+import javax.ejb.Startup;
+import java.sql.*;
 import java.util.*;
 
+@Singleton
+@Startup
 public class ContactApi {
-    private static String path = "phone-book.txt";
+
+    static final String DB_URL_ORACLE = "jdbc:oracle:thin:@192.168.43.45:1521/xe";   // jdbc:oracle:thin:@192.168.43.61:1521/orcl
+
+    //  Database credentials
+    static final String USER = "hr as normal";  //  sys as sysdba
+    static final String PASS = "hr";            //  orcl
+
+    //private static final String path = "phone-book.txt";
+    private int id;
     private String phoneNumber;
     private String firstName;
     private String lastName;
     private boolean exists = false;
 
-    public ContactApi(String phoneNumber, String firsName, String lastName) {
+    public ContactApi(int id, String firstName, String lastName, String phoneNumber) {
+        this.id = id;
         this.phoneNumber = phoneNumber;
-        this.firstName = firsName;
+        this.firstName = firstName;
         this.lastName = lastName;
     }
 
     public ContactApi() {
     }
 
-    public void addContact(String data) {
+    public void addContact() {
 
+        Connection conn = null;
+        Statement stmt = null;
         try {
-            FileWriter output = new FileWriter(path, true);
-            output.write("\n" + data);
-            output.close();
-        } catch (FileNotFoundException e) {
+
+            Class.forName("oracle.jdbc.driver.OracleDriver");
+
+            conn = DriverManager.getConnection(DB_URL_ORACLE, USER, PASS);
+
+            stmt = conn.createStatement();
+
+            stmt.executeUpdate(String.format("INSERT INTO PHONEBOOK(ID, FIRST_NAME, LAST_NAME, PHONE_NUMBER) " +
+                    " values (PhoneBookSeq.nextval, '%s', '%s', '%s')", firstName, lastName, phoneNumber));
+
+            stmt.close();
+            conn.close();
+
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
-        } catch (IOException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     public ArrayList<ContactApi> searchContact(String value) {
 
+        Connection conn = null;
+        Statement stmt = null;
+
         ArrayList<ContactApi> list = new ArrayList<>();
 
-        Scanner scanner = null;
         try {
-            scanner = new Scanner(new File(path));
-        } catch (FileNotFoundException e) {
+
+            Class.forName("oracle.jdbc.driver.OracleDriver");
+
+            conn = DriverManager.getConnection(DB_URL_ORACLE, USER, PASS);
+
+            stmt = conn.createStatement();
+
+            String sql = "SELECT ID, FIRST_NAME, LAST_NAME, PHONE_NUMBER FROM PHONEBOOK WHERE FIRST_NAME like ? or LAST_NAME like ? or PHONE_NUMBER like ?";
+
+            ResultSet rs = stmt.executeQuery(sql);
+
+            while (rs.next()) {
+
+                id = rs.getInt("id");
+
+                phoneNumber = rs.getString("phone_number");
+
+                firstName = rs.getString("first_name");
+
+                lastName = rs.getString("last_name");
+
+                if (firstName.contains(value) || lastName.contains(value) || phoneNumber.contains(value)) {
+
+                    list.add(new ContactApi(id, firstName, lastName, phoneNumber));
+
+                } else {
+
+                    id = 0;
+
+                    phoneNumber = null;
+
+                    firstName = null;
+
+                    lastName = null;
+                }
+
+            }
+
+            rs.close();
+            stmt.close();
+            conn.close();
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        while (scanner.hasNext()) {
-
-            phoneNumber = scanner.next();
-
-            firstName = scanner.next();
-
-            lastName = scanner.next();
-
-            if (firstName.contains(value) || lastName.contains(value) || phoneNumber.contains(value)) {
-
-                list.add(new ContactApi(phoneNumber, firstName, lastName));
-
-            } else {
-                phoneNumber = null;
-
-                firstName = null;
-
-                lastName = null;
-            }
-
-        }
-
-        scanner.close();
 
         return list;
     }
@@ -76,39 +120,62 @@ public class ContactApi {
 
     public boolean isContactExist(ContactApi contacts) {
 
-        Scanner scanner = null;
+        Connection conn = null;
+        Statement stmt = null;
+
         try {
-            scanner = new Scanner(new File(path));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
 
-        while (scanner.hasNext()) {
+            firstName = contacts.getfirstName();
+            lastName = contacts.getlastName();
+            phoneNumber = contacts.getPhoneNumber();
 
-            phoneNumber = scanner.next();
+            Class.forName("oracle.jdbc.driver.OracleDriver");
 
-            firstName = scanner.next();
+            conn = DriverManager.getConnection(DB_URL_ORACLE, USER, PASS);
 
-            lastName = scanner.next();
+            stmt = conn.createStatement();
 
-            if (firstName.equals(contacts.firstName) & lastName.equals(contacts.lastName) & phoneNumber.contains(contacts.phoneNumber)) {
+            String sql = String.format("SELECT ID, FIRST_NAME, LAST_NAME, PHONE_NUMBER FROM PHONEBOOK WHERE FIRST_NAME = '%s' or LAST_NAME = '%s' or PHONE_NUMBER = '%s' " , firstName, lastName, phoneNumber);
 
-                exists = true;
-                break;
+            ResultSet rs = stmt.executeQuery(sql);
 
-            } else {
+            while (rs.next()) {
 
-                exists = false;
+                id = rs.getInt("id");
+
+                phoneNumber = rs.getString("phone_number");
+
+                firstName = rs.getString("first_name");
+
+                lastName = rs.getString("last_name");
+
+
+                if (firstName.equals(contacts.firstName) & lastName.equals(contacts.lastName) & phoneNumber.contains(contacts.phoneNumber)) {
+
+                    exists = true;
+                    break;
+
+                } else {
+
+                    exists = false;
+
+                }
 
             }
 
+            rs.close();
+            stmt.close();
+            conn.close();
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
-        scanner.close();
-
         return exists;
-
     }
+
 
     public String getPhoneNumber() {
         return phoneNumber;

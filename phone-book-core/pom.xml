@@ -11,5 +11,14 @@
 
     <artifactId>phone-book-core</artifactId>
 
+    <dependencies>
+    <dependency>
+        <groupId>com.oracle</groupId>
+        <artifactId>ojdbc8</artifactId>
+        <version>19.3.0.0.0</version>
+    </dependency>
+    </dependencies>
 
 </project>
+
+

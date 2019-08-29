@@ -66,7 +66,7 @@ public class PhonebookServlet extends HttpServlet {
 
         contact = new Contact(phonenumber, firstname, lastname);
 
-        ContactApi contactApi = new ContactApi(contact.getPhoneNumber(), contact.getFirstName(), contact.getLastName());
+        ContactApi contactApi = new ContactApi(contact.getId(),contact.getFirstName(), contact.getLastName(), contact.getPhoneNumber());
 
         if (contact.isContactExist(contactApi)) {
 

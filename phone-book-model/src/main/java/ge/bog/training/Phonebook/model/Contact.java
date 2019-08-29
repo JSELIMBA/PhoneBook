@@ -10,6 +10,7 @@ import java.util.List;
 @Local
 public class Contact {
 
+    private int id;
     private String phoneNumber;
     private String firstName;
     private String lastName;
@@ -26,9 +27,10 @@ public class Contact {
 
     public void addContact() {
 
-        ContactApi contact = new ContactApi();
+        ContactApi contact = new ContactApi(id, firstName, lastName, phoneNumber);
 
-        contact.addContact(phoneNumber + " " + firstName + " " + lastName);
+
+        contact.addContact();
 
     }
 
@@ -70,5 +72,9 @@ public class Contact {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public int getId() {
+        return id;
     }
 }
