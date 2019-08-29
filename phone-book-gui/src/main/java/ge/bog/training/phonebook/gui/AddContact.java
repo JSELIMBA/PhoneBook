@@ -58,15 +58,19 @@ class AddContact {
 
                     ContactApi contactApi = new ContactApi(contact.getId(), contact.getPhoneNumber(), contact.getFirstName(), contact.getLastName());
 
-                    if (search.isContactExist(contactApi)) {
+                    try {
+                        if (search.isContactExist(contactApi)) {
 
-                        JOptionPane.showMessageDialog(null, "ასეთი ნომერი უკვე არსებობს!");
+                            JOptionPane.showMessageDialog(null, "ასეთი ნომერი უკვე არსებობს!");
 
-                    } else {
+                        } else {
 
-                        contact.addContact();
+                            contact.addContact();
 
-                        JOptionPane.showMessageDialog(null, "ნომერი დამატებულია!");
+                            JOptionPane.showMessageDialog(null, "ნომერი დამატებულია!");
+                        }
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
                     }
                 }
 

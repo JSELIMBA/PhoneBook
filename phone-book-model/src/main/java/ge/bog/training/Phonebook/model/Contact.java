@@ -4,6 +4,7 @@ import ge.bog.training.Phonebook.core.ContactApi;
 
 import javax.ejb.Local;
 import javax.ejb.Stateless;
+import java.sql.SQLException;
 import java.util.List;
 
 @Stateless
@@ -25,16 +26,23 @@ public class Contact {
     }
 
 
-    public void addContact() {
+    public void addContact() throws Exception {
 
         ContactApi contact = new ContactApi(id, firstName, lastName, phoneNumber);
 
 
-        contact.addContact();
+        try {
+            contact.addContact();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new SQLException();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
-    public List<ContactApi> searchContact(String sValue) {
+    public List<ContactApi> searchContact(String sValue) throws Exception {
 
         ContactApi contact = new ContactApi();
 
@@ -43,7 +51,7 @@ public class Contact {
         return result;
     }
 
-    public boolean isContactExist(ContactApi contacts) {
+    public boolean isContactExist(ContactApi contacts) throws Exception{
 
         ContactApi contact = new ContactApi();
 

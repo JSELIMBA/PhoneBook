@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 @WebServlet("/PhonebookServlet")
@@ -25,7 +26,20 @@ public class PhonebookServlet extends HttpServlet {
         String sValue = req.getParameter("sValue");
 
         if (sValue.length() != 0) {
-            List<ContactApi> result = contact.searchContact(sValue);
+            List<ContactApi> result = null;
+            try {
+                result = contact.searchContact(sValue);
+            } catch (SQLException e) {
+                System.out.println("error");
+
+                req.getSession().setAttribute("contactSearchResult", "დაფიქსირდა ბაზის შეცდომა!");
+                resp.sendRedirect("searchContact.jsp");
+                e.printStackTrace();
+                System.out.println("all done");
+                return;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
             String contacts = "";
 
@@ -68,12 +82,21 @@ public class PhonebookServlet extends HttpServlet {
 
         ContactApi contactApi = new ContactApi(contact.getId(),contact.getFirstName(), contact.getLastName(), contact.getPhoneNumber());
 
-        if (contact.isContactExist(contactApi)) {
+        try {
+            if (contact.isContactExist(contactApi)) {
 
-            req.getSession().setAttribute("contactAddResult", "კონტაქტი უკვე არსებობს");
+                req.getSession().setAttribute("contactAddResult", "კონტაქტი უკვე არსებობს");
 
-        } else {
-            contact.addContact();
+            } else {
+                contact.addContact();
+            }
+        } catch (SQLException e) {
+            req.getSession().setAttribute("contactAddResult", "დაფიქსირდა ბაზის შეცდომა!");
+            resp.sendRedirect("addContact.jsp");
+            e.printStackTrace();
+            return;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         resp.sendRedirect("addContact.jsp");

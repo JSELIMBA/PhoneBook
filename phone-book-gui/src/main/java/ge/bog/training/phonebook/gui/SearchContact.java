@@ -62,7 +62,12 @@ public class SearchContact {
 
                     Contact search = new Contact();
 
-                    List<ContactApi> result = search.searchContact(name.getText());
+                    List<ContactApi> result = null;
+                    try {
+                        result = search.searchContact(name.getText());
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
 
                     int i = 3;
                     for (ContactApi res : result) {

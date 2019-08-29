@@ -12,8 +12,8 @@ public class ContactApi {
     static final String DB_URL_ORACLE = "jdbc:oracle:thin:@192.168.43.45:1521/xe";   // jdbc:oracle:thin:@192.168.43.61:1521/orcl
 
     //  Database credentials
-    static final String USER = "hr as normal";  //  sys as sysdba
-    static final String PASS = "hr";            //  orcl
+    static final String USER = "hr as normal";  //  sys as sysdba // hr as normal
+    static final String PASS = "orcl";            //  orcl          //
 
     //private static final String path = "phone-book.txt";
     private int id;
@@ -32,7 +32,7 @@ public class ContactApi {
     public ContactApi() {
     }
 
-    public void addContact() {
+    public void addContact() throws Exception {
 
         Connection conn = null;
         Statement stmt = null;
@@ -54,10 +54,11 @@ public class ContactApi {
             e.printStackTrace();
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new SQLException();
         }
     }
 
-    public ArrayList<ContactApi> searchContact(String value) {
+    public ArrayList<ContactApi> searchContact(String value) throws Exception {
 
         Connection conn = null;
         Statement stmt = null;
@@ -111,6 +112,7 @@ public class ContactApi {
             e.printStackTrace();
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new SQLException();
         }
 
 
@@ -118,7 +120,7 @@ public class ContactApi {
     }
 
 
-    public boolean isContactExist(ContactApi contacts) {
+    public boolean isContactExist(ContactApi contacts) throws Exception{
 
         Connection conn = null;
         Statement stmt = null;
@@ -171,6 +173,7 @@ public class ContactApi {
             e.printStackTrace();
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new SQLException();
         }
 
         return exists;
