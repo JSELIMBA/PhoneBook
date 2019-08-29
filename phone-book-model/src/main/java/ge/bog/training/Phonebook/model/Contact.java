@@ -2,8 +2,12 @@ package ge.bog.training.Phonebook.model;
 
 import ge.bog.training.Phonebook.core.ContactApi;
 
+import javax.ejb.Local;
+import javax.ejb.Stateless;
 import java.util.List;
 
+@Stateless
+@Local
 public class Contact {
 
     private String phoneNumber;
