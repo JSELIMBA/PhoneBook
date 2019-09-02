@@ -1,25 +1,39 @@
-package ge.bog.training.Phonebook.model;
+package ge.bog.training.phonebook.model;
 
-import ge.bog.training.Phonebook.core.ContactApi;
+
+import ge.bog.training.phonebook.core.ContactApi;
 
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Stateless
 @Local
 public class Contact {
 
+    int index = 0;
     private int id;
     private String phoneNumber;
     private String firstName;
     private String lastName;
 
-    public Contact (String phoneNumber, String firstName, String lastName) {
+    public Contact (String firstName, String lastName, String phoneNumber) {
         this.phoneNumber = phoneNumber;
         this.firstName = firstName;
         this.lastName = lastName;
+    }
+
+    public Contact (int id, String firstName, String lastName, String phoneNumber) {
+        this.id = id;
+        this.phoneNumber = phoneNumber;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
+    public Contact (int id) {
+        this.id = id;
     }
 
     public Contact() {
@@ -28,7 +42,7 @@ public class Contact {
 
     public void addContact() throws Exception {
 
-        ContactApi contact = new ContactApi(id, firstName, lastName, phoneNumber);
+        ContactApi contact = new ContactApi(firstName, lastName, phoneNumber);
 
 
         try {
@@ -42,20 +56,54 @@ public class Contact {
 
     }
 
-    public List<ContactApi> searchContact(String sValue) throws Exception {
+    public void updateContact() throws Exception {
 
-        ContactApi contact = new ContactApi();
+        ContactApi contact = new ContactApi(id, firstName, lastName, phoneNumber);
 
-        List<ContactApi> result = contact.searchContact(sValue);;
+        contact.updateContact();
+
+    }
+
+    public List<Contact> searchContact(String sValue) throws Exception {
+
+        ContactApi contacts = new ContactApi();
+
+        List<Contact> result = new ArrayList<>();
+
+        List<ContactApi> res = contacts.searchContact(sValue);
+
+
+        for (ContactApi results: res
+             ) {
+
+            result.add(new Contact(res.get(index).getId() ,res.get(index).getFirstName(),res.get(index).getLastName(),res.get(index).getPhoneNumber()));
+            index++;
+        }
 
         return result;
     }
 
-    public boolean isContactExist(ContactApi contacts) throws Exception{
+    public List<Contact> searchContact(int id) throws Exception {
 
         ContactApi contact = new ContactApi();
 
-        return contact.isContactExist(contacts);
+        List<Contact> result = new ArrayList<>();
+
+        List<ContactApi> res =  contact.searchContact(id);
+
+        for (ContactApi results: res
+        ) {
+            result.add(new Contact(res.get(index).getId() ,res.get(index).getFirstName(),res.get(index).getLastName(),res.get(index).getPhoneNumber()));
+        }
+
+        return result;
+    }
+
+    public boolean isContactExist(Contact contacts) throws Exception{
+
+        ContactApi contact = new ContactApi(contacts.firstName, contacts.lastName, contacts.phoneNumber);
+
+        return contact.isContactExist(contact);
     }
 
     public String getPhoneNumber() {

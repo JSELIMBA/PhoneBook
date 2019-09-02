@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>phone-book</artifactId>
-        <groupId>ge.bog.training.PhoneBook</groupId>
+        <groupId>ge.bog.training.phoneBook</groupId>
         <version>1.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -12,12 +12,12 @@
     <artifactId>phone-book-gui</artifactId>
     <dependencies>
         <dependency>
-            <groupId>ge.bog.training.PhoneBook</groupId>
+            <groupId>ge.bog.training.phoneBook</groupId>
             <artifactId>phone-book-model</artifactId>
             <version>1.0</version>
         </dependency>
         <dependency>
-            <groupId>ge.bog.training.PhoneBook</groupId>
+            <groupId>ge.bog.training.phoneBook</groupId>
             <artifactId>phone-book-core</artifactId>
             <version>1.0</version>
             <scope>compile</scope>

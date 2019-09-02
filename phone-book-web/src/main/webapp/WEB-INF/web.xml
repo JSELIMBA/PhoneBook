@@ -13,5 +13,16 @@
         <servlet-name>PhonebookServlet</servlet-name>
         <url-pattern>/phonebook</url-pattern>
     </servlet-mapping>
+
+
+    <servlet>
+        <servlet-name>PhoneBookUpdateServlet</servlet-name>
+        <servlet-class>ge.bog.training.phonebook.web.PhoneBookUpdateServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>PhoneBookUpdateServlet</servlet-name>
+        <url-pattern>/phonebookUpdate</url-pattern>
+    </servlet-mapping>
     
 </web-app>

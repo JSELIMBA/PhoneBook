@@ -1,4 +1,4 @@
-<%--
+<%@ page import="java.sql.ResultSet" %><%--
   Created by IntelliJ IDEA.
   User: jselimba
   Date: 2019-08-28
@@ -40,17 +40,41 @@
     </center>
 </form>
 
-<div>
-    <center>
+<center>
+
+    <form action = "phonebookUpdate" method = "GET">
+<table class="table table-bordered table-triped table-hover">
+
+    <thead>
+
+    <tr>
+
+        <th>ID</th>
+        <th>Firs Name</th>
+        <th>Lasr Name</th>
+        <th>Phone Number</th>
+
+    </tr>
+
+    </thead>
+
+    <tbody>
+
     <%
         if (session.getAttribute("contactSearchResult") != null) {
             out.print(session.getAttribute("contactSearchResult"));
+            session.setAttribute("contactUpdateResult", "");
         }
 
+
     %>
-    </center>
-    <br/>
-</div>
+
+    </tbody>
+
+</table>
+    </form>
+
+</center>
 
 <br/>
 <button onclick="window.location.href='/phone-book-web-1.0/index.jsp'">მთავარი</button>

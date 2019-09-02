@@ -1,13 +1,12 @@
 package ge.bog.training.phonebook.gui;
 
-import ge.bog.training.Phonebook.core.ContactApi;
-import ge.bog.training.Phonebook.model.Contact;
+import ge.bog.training.phonebook.core.ContactApi;
+import ge.bog.training.phonebook.model.Contact;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
 
 class AddContact {
     void addContact() {
@@ -59,7 +58,7 @@ class AddContact {
                     ContactApi contactApi = new ContactApi(contact.getId(), contact.getPhoneNumber(), contact.getFirstName(), contact.getLastName());
 
                     try {
-                        if (search.isContactExist(contactApi)) {
+                        if (search.isContactExist(contact)) {
 
                             JOptionPane.showMessageDialog(null, "ასეთი ნომერი უკვე არსებობს!");
 

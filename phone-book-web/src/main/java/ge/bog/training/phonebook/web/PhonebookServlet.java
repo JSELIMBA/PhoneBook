@@ -1,7 +1,7 @@
 package ge.bog.training.phonebook.web;
 
-import ge.bog.training.Phonebook.core.ContactApi;
-import ge.bog.training.Phonebook.model.Contact;
+import ge.bog.training.phonebook.model.Contact;
+
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,7 +16,7 @@ import java.util.List;
 public class PhonebookServlet extends HttpServlet {
 
     @EJB
-    private Contact contact;
+    private Contact contacts;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -26,16 +26,13 @@ public class PhonebookServlet extends HttpServlet {
         String sValue = req.getParameter("sValue");
 
         if (sValue.length() != 0) {
-            List<ContactApi> result = null;
+            List<Contact> result = null;
             try {
-                result = contact.searchContact(sValue);
+                result = contacts.searchContact(sValue);
             } catch (SQLException e) {
-                System.out.println("error");
-
                 req.getSession().setAttribute("contactSearchResult", "დაფიქსირდა ბაზის შეცდომა!");
                 resp.sendRedirect("searchContact.jsp");
                 e.printStackTrace();
-                System.out.println("all done");
                 return;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -43,14 +40,23 @@ public class PhonebookServlet extends HttpServlet {
 
             String contacts = "";
 
-            for (ContactApi res : result) {
+            for (Contact res : result) {
 
-                if (res.getfirstName().length() == 0) {
+                if (res.getFirstName().length() == 0) {
                     req.getSession().setAttribute("contactSearchResult", "კონტაქტი არ მოიძებნა");
 
                 } else {
 
-                    contacts = contacts + res.getfirstName() + " " + res.getlastName() + " " + res.getPhoneNumber() + "<br/>";
+                    contacts = contacts + (
+                            "    <tr>\n" +
+                                    "        <td>" + res.getId() + "</td>\n" +
+                                    "        <td>" + res.getFirstName() + "</td>\n" +
+                                    "        <td>" + res.getLastName() + "</td>\n" +
+                                    "        <td>" + res.getPhoneNumber() + "</td>\n" +
+                                    "        <td>" +
+                                    "    <button onclick=\"window.location.href='/phone-book-web-1.0/phonebookUpdate?u=" + res.getId() + "' \">რედაქტირება</button>" +
+                                    "        <td>" +
+                                    "    </tr>");
 
                     req.getSession().setAttribute("contactSearchResult", contacts);
                 }
@@ -78,17 +84,15 @@ public class PhonebookServlet extends HttpServlet {
 
         req.getSession().setAttribute("contactAddResult", "კონტაქტი დამატებულია");
 
-        contact = new Contact(phonenumber, firstname, lastname);
-
-        ContactApi contactApi = new ContactApi(contact.getId(),contact.getFirstName(), contact.getLastName(), contact.getPhoneNumber());
+        contacts = new Contact(phonenumber, firstname, lastname);
 
         try {
-            if (contact.isContactExist(contactApi)) {
+            if (contacts.isContactExist(contacts)) {
 
                 req.getSession().setAttribute("contactAddResult", "კონტაქტი უკვე არსებობს");
 
             } else {
-                contact.addContact();
+                contacts.addContact();
             }
         } catch (SQLException e) {
             req.getSession().setAttribute("contactAddResult", "დაფიქსირდა ბაზის შეცდომა!");
